@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -96,7 +97,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                     children: [
                       // "Meet the Team" Header
                       Text(
-                        'Meet Our Team:',
+                        'Our Tool Summary:',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: Color(0xFFE4002B), // SMU Red
@@ -106,7 +107,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
 
                       // Tool Summary
                       Text(
-                        'Our tool using ChatGPT to generate ethical qu',
+                        'Our tool uses ChatGPT to take user questions, and responds to it based on the stance they input(for or against). For our purposes, preset questions have been hardcoded, but in a full model ChatGPT would generate preset questions as well.',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: Colors.black87,
                             ),
@@ -233,7 +234,5 @@ class _AboutUsPageState extends State<AboutUsPage> {
     );
   }
 }
-
-
 
 
