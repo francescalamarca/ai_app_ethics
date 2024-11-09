@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'results_screen.dart'
 
 //calling the llm model - chat gpt
 const String OpenAiKey = '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';
