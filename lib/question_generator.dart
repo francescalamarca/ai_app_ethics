@@ -8,17 +8,17 @@ class QuestionGenerator extends StatefulWidget {
   _QuestionGeneratorState createState() => _QuestionGeneratorState();
 }
 
-
 //idea behind this is to grey out the unused option the user does not choose when either creating  OR choosing a preset question
 class _QuestionGeneratorState extends State<QuestionGenerator> {
   String? selectedPreset;
-  final TextEditingController customQuestionController = TextEditingController();
   bool isCustomQuestionEnabled = true;  // Manage whether the custom question field is enabled
   bool isPresetQuestionEnabled = true;  // Manage whether the preset dropdown is enabled
 
   // List of preset questions for the dropdown - hardcoded
   List<String> presetQuestions = ['Is AI ethical?', 'Should AI replace humans?', 'Unemployment because of AI a reasonable ethical concern.'];
-  final List<Map<String, String>> _customMessages = [];
+
+  TextEditingController customQuestionController = TextEditingController();
+  final List<String> _customMessages = [];
 
   @override
   void dispose() {
@@ -26,25 +26,26 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
     super.dispose();
   }
 
-  void _handleSubmitted(String text) async {
+  void handleSubmitted(String stance, String question) async {
     // Logic to send message to gpt will go here
-    if (text.isEmpty) return;
+    if (question.isEmpty) return;
 
     customQuestionController.clear();
     setState(() {
-      _customMessages.add({'User: $stance, $text'});
+      _customMessages.add('User: $stance, $question');
     });
+
     try {
-      final String response = await ChatGPTService().getResponse(text);
+      final String response = await ChatGPTService().getResponse('$stance$question');
+
       setState(() {
-        _customMessages.add({'ChatGPT: $response'});
+        _customMessages.add('ChatGPT: $response');
       });
-    } catch(e) {
-      print("error getting a response")
+    } catch (e) {
+      print("Error getting a response: $e");
     }
-  }
-  
-  
+  } //end handleSubmitted
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,14 +109,15 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
               children: ['For', 'Against', 'Neutral'].map((stance) {
                 return ElevatedButton(
                   onPressed: () {
-                    _handleSubmitted(
-                      customQuestionController.text.isEmpty ? selectedPreset! : customQuestionController.text,
-                    );
+                    final String question = customQuestionController.text.isEmpty 
+                      ? selectedPreset!
+                      : customQuestionController.text;
+                    handleSubmitted(stance, question);
                     Navigator.pushNamed(
                       context,
                       'results_screen',
                       arguments: {
-                        'question': customQuestionController.text.isEmpty ? selectedPreset : customQuestionController.text,
+                        'question': question,
                         'stance': stance,
                       },
                     );
@@ -123,6 +125,20 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
                   child: Text(stance),
                 );
               }).toList(),
+            ),
+            const SizedBox(height: 20),
+            //add a reset button to reset dropdown
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                // Reset the selected preset question and custom question controller
+                selectedPreset = null;
+                customQuestionController.clear();
+                isPresetQuestionEnabled = true; // Enable the dropdown again
+                isCustomQuestionEnabled = true; // Enable custom question input
+              });
+            },
+            child: const Text('Reset Filters'),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -143,4 +159,4 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
       ),
     );
   }
-}}
+}
