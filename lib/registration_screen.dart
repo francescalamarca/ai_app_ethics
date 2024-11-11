@@ -88,7 +88,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     showSpinner = false;
                   });
                 },
-              )
+              ),
+              const SizedBox(height: 20),
+              RoundedButton(
+                colour: Colors.lightBlueAccent,
+                title: "Back to Welcome Screen",
+                    onPressed: () {
+                      // Your 'For' action
+                      Navigator.pushReplacementNamed( //this will take the back button option away back at the home page
+                        context, 
+                        'welcome_screen',
+                        arguments: {
+                            //none  to pass
+                        },
+                      );
+                    },
+                    // child: const Text('Back to Home'),
+                  ),
             ],
           ),
         ),
