@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'rounded_button.dart';
 
 User? loggedinUser;
 
@@ -47,9 +48,40 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: Center(
-        child: Text(
-          "Welcome User",
-          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Text(
+              'Welcome User',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 20),
+            RoundedButton(
+              colour: Colors.lightBlueAccent,
+              title: 'About Us',
+              onPressed:() async{
+                Navigator.pushNamed(
+                  context,
+                  'about_us_page',
+                  arguments: {},
+                );
+              }
+            ),
+            const SizedBox(height: 20),
+            RoundedButton(
+              colour: Colors.lightBlueAccent,
+              title: 'Question Generator',
+              onPressed:() async{
+                Navigator.pushNamed(
+                  context,
+                  'question_generator',
+                  arguments: {},
+                );
+              }
+            ),
+            ],
         ),
       ),
     );

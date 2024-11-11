@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'chat_gpt_service.dart';
+import 'rounded_button.dart';
 
 
 class QuestionGenerator extends StatefulWidget {
@@ -51,11 +52,11 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Question Generator'),
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 84, 156, 215),
       ),
-      backgroundColor: const Color.fromARGB(255, 84, 156, 215),
+      backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -107,7 +108,9 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: ['For', 'Against', 'Neutral'].map((stance) {
-                return ElevatedButton(
+                return RoundedButton(
+                  colour: Colors.lightBlueAccent,
+                  title: stance,
                   onPressed: () {
                     final String question = customQuestionController.text.isEmpty 
                       ? selectedPreset!
@@ -122,13 +125,15 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
                       },
                     );
                   },
-                  child: Text(stance),
+                  // child: Text(stance),
                 );
               }).toList(),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             //add a reset button to reset dropdown
-            ElevatedButton(
+            RoundedButton(
+              colour: Colors.lightBlueAccent,
+              title: "Reset Filters",
               onPressed: () {
                 setState(() {
                 // Reset the selected preset question and custom question controller
@@ -138,10 +143,12 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
                 isCustomQuestionEnabled = true; // Enable custom question input
               });
             },
-            child: const Text('Reset Filters'),
+            // child: const Text('Reset Filters'),
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
+            const SizedBox(height: 10),
+            RoundedButton(
+              colour: Colors.lightBlueAccent,
+              title: "Back to Home",
                   onPressed: () {
                     // Your 'For' action
                     Navigator.pushReplacementNamed( //this will take the back button option away back at the home page
@@ -152,7 +159,7 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
                       },
                     );
                   },
-                  child: const Text('Back to Home'),
+                  // child: const Text('Back to Home'),
                 ),
           ],
         ),

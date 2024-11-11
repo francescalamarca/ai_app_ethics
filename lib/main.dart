@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'welcome_screen.dart';
 import 'home_screen.dart';
-import 'signup_screen.dart';
+import 'registration_screen.dart';
 import 'login_screen.dart';
 import 'question_generator.dart';
 import 'results_screen.dart';
@@ -22,7 +22,7 @@ void main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    await dotenv.load();
+    //await dotenv.load();
     runApp(
       DevicePreview(
         // enabled: !kReleaseMode, //only see preview in debug mode

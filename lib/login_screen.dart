@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'rounded_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:flutter/material.dart';
+import 'welcome_screen.dart';
 
 //code for designing the UI of our text field where the user writes his email id or password
 
@@ -80,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       final user = await _auth.signInWithEmailAndPassword(
                           email: email, password: password);
                       if (user != null) {
-                        Navigator.pushNamed(context, 'home_screen');
+                        Navigator.pushReplacementNamed(context, 'home_screen');
                       }
                     } catch (e) {
                       print(e);
@@ -89,6 +90,22 @@ class _LoginScreenState extends State<LoginScreen> {
                       showSpinner = false;
                     });
                   }),
+                SizedBox(
+                height: 24.0,
+              ),
+              RoundedButton(
+                  colour: Colors.lightBlueAccent,
+                  title: 'Back to Welcome Screen',
+                  onPressed: () async {
+                    Navigator.pushReplacementNamed( //this will take the back button option away back at the home page
+                      context, 
+                      'welcome_screen',
+                      arguments: {
+                          //none  to pass
+                      },
+                    );
+                  },
+              ),
             ],
           ),
         ),

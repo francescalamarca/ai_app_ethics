@@ -67,11 +67,11 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - C:\Users\ogboi\Downloads\ai_ethics_project\ai_app_ethics\assets\ethanchou.png
-    - C:\Users\ogboi\Downloads\ai_ethics_project\ai_app_ethics\assets\francesca.png
-    - C:\Users\ogboi\Downloads\ai_ethics_project\ai_app_ethics\assets\marioneogboi.png
-    - C:\Users\ogboi\Downloads\ai_ethics_project\ai_app_ethics\assets\convert.png
-    - .env
+    - assets/ethanchou.png
+    - assets/francesca.png
+    - assets/marioneogboi.png
+    - assets/convert.png
+    - lib/.env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

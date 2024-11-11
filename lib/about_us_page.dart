@@ -73,7 +73,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
           child: ListView(
             children: [
               // Card to wrap "Meet the Team" and "Tool Summary"
