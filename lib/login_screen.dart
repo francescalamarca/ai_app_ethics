@@ -45,6 +45,11 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              const Text(
+                'Ethical AI Generator',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 24),
+                ),
               TextField(
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
@@ -90,9 +95,21 @@ class _LoginScreenState extends State<LoginScreen> {
                       showSpinner = false;
                     });
                   }),
-                SizedBox(
-                height: 24.0,
+                SizedBox(height: 24.0,),
+              RoundedButton(
+                  colour: Colors.lightBlueAccent,
+                  title: 'Forgot Password',
+                  onPressed: () async {
+                    Navigator.pushReplacementNamed( //this will take the back button option away back at the home page
+                      context, 
+                      'Forgot Password',
+                      arguments: {
+                          //none  to pass
+                      },
+                    );
+                  },
               ),
+              
               RoundedButton(
                   colour: Colors.lightBlueAccent,
                   title: 'Back to Welcome Screen',

@@ -44,6 +44,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              const Text(
+                'Ethical AI Generator',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 30),
+                ),
               TextField(
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
@@ -65,6 +70,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   },
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Enter your Password')),
+              const Text(
+                'Password must be at least 6 characters.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 14),
+              ),
               SizedBox(
                 height: 24.0,
               ),
@@ -76,6 +86,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     showSpinner = true;
                   });
                   try {
+                    if (email.isEmpty || password.isEmpty) {
+                      print('Email and password cannot be empty');
+                      return;
+                    }
                     final newUser = await _auth.createUserWithEmailAndPassword(
                         email: email, password: password);
                     if (newUser != null) {

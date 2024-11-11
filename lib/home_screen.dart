@@ -36,15 +36,19 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: null,
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.close),
+              icon: Icon(Icons.exit_to_app),
               onPressed: () {
                 _auth.signOut();
-                Navigator.pop(context);
+                Navigator.pushReplacementNamed(
+                  context,
+                  'welcome_screen',
+                  arguments: {},
+                );
 
                 //Implement logout functionality
               }),
         ],
-        title: Text('Home Page'),
+        title: Text('Ethical AI Generator Home'),
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: Center(
@@ -55,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const Text(
               'Welcome User',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 30),
             ),
             const SizedBox(height: 20),
             RoundedButton(
