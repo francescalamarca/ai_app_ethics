@@ -34,7 +34,8 @@ dependencies:
   firebase_auth: 4.19.6
   device_preview: ^1.1.0
   #dependencies for gpt connection
-  http: ^0.13.4
+  http: 1.2.2
+  flutter_dotenv: 5.2.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -70,6 +71,7 @@ flutter:
     - C:\Users\ogboi\Downloads\ai_ethics_project\ai_app_ethics\assets\francesca.png
     - C:\Users\ogboi\Downloads\ai_ethics_project\ai_app_ethics\assets\marioneogboi.png
     - C:\Users\ogboi\Downloads\ai_ethics_project\ai_app_ethics\assets\convert.png
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

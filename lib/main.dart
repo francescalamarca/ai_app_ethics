@@ -11,16 +11,21 @@ import 'package:device_preview/device_preview.dart';
 import "package:http/http.dart" as http;
 import "dart:convert";
 
+//for gpt
+
+import 'package:flutter_dotenv/flutter_dotenv.dart' as dotenv;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    await dotenv.load();
     runApp(
-      // DevicePreview(
-      //   enabled: !kReleaseMode, //only see preview in debug mode
-      //   builder: (context) => MyApp()
-      // ),
+      DevicePreview(
+        // enabled: !kReleaseMode, //only see preview in debug mode
+        builder: (context) => MyApp()
+      ),
     );
 }
 

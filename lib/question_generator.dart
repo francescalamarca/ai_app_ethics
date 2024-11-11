@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'chat_gpt_service.dart';
 
-//calling the llm model - chat gpt
-const String OpenAiKey = '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';
-final List<Map<String, String>> messages = [];
 
 class QuestionGenerator extends StatefulWidget {
   @override
@@ -14,18 +12,36 @@ class QuestionGenerator extends StatefulWidget {
 //idea behind this is to grey out the unused option the user does not choose when either creating  OR choosing a preset question
 class _QuestionGeneratorState extends State<QuestionGenerator> {
   String? selectedPreset;
-  TextEditingController customQuestionController = TextEditingController();
+  final TextEditingController customQuestionController = TextEditingController();
   bool isCustomQuestionEnabled = true;  // Manage whether the custom question field is enabled
   bool isPresetQuestionEnabled = true;  // Manage whether the preset dropdown is enabled
 
   // List of preset questions for the dropdown - hardcoded
   List<String> presetQuestions = ['Is AI ethical?', 'Should AI replace humans?', 'Unemployment because of AI a reasonable ethical concern.'];
-
+  final List<Map<String, String>> _customMessages = [];
   @override
   void dispose() {
     customQuestionController.dispose();
     super.dispose();
   }
+
+  void _handleSubmitted(String text) async {
+    // Logic to send message to gpt will go here
+    if (text.isEmpty) return;
+
+    customQuestionController.clear();
+    setState(() {
+      _customMessages.add({'User: $stance, $text'});
+    });
+  try {
+    final String response = await ChatGPTService().getResponse(text);
+    setState(() {
+      _customMessages.add({'ChatGPT: ${response}'});
+    });
+  } catch(e) {
+    print("error getting a response")
+  }
+  
   
   @override
   Widget build(BuildContext context) {
@@ -87,53 +103,24 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
             // For, Against, Neutral Buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
+              children: ['For', 'Against', 'Neutral'].map((stance) {
+                return ElevatedButton(
                   onPressed: () {
-                    // Your 'For' action
+                    _handleSubmitted(
+                      customQuestionController.text.isEmpty ? selectedPreset! : customQuestionController.text,
+                    );
                     Navigator.pushNamed(
                       context,
                       'results_screen',
                       arguments: {
-                        'question': customQuestionController.text.isEmpty ? selectedPreset : customQuestionController.text,  // Send the question
-                        'stance': 'For',  // Send the stance
-                        'response': "AI's response for the For stance",  // Replace with actual AI response
+                        'question': customQuestionController.text.isEmpty ? selectedPreset : customQuestionController.text,
+                        'stance': stance,
                       },
                     );
                   },
-                  child: const Text('For'),
-                ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Your 'Against' action
-                      Navigator.pushNamed(
-                        context,
-                        'results_screen',
-                        arguments: {
-                          'question': customQuestionController.text.isEmpty ? selectedPreset : customQuestionController.text,  // Send the question
-                          'stance': 'Against',  // Send the stance
-                          'response': "AI's response for the Against stance",  // Replace with actual AI response
-                        },
-                      );
-                    },
-                    child: const Text('Against'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Your 'Neutral' action
-                      Navigator.pushNamed(
-                        context,
-                        'results_screen',
-                        arguments: {
-                          'question': customQuestionController.text.isEmpty ? selectedPreset : customQuestionController.text,  // Send the question
-                          'stance': 'Neutral',  // Send the stance
-                          'response': "AI's response for the Neutral stance",  // Replace with actual AI response
-                        },
-                      );
-                    },
-                    child: const Text('Neutral'),
-                  ),
-              ],
+                  child: Text(stance),
+                );
+              }).toList(),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -154,4 +141,4 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
       ),
     );
   }
-}
+}}
