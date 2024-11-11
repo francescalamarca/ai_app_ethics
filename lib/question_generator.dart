@@ -19,6 +19,7 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
   // List of preset questions for the dropdown - hardcoded
   List<String> presetQuestions = ['Is AI ethical?', 'Should AI replace humans?', 'Unemployment because of AI a reasonable ethical concern.'];
   final List<Map<String, String>> _customMessages = [];
+
   @override
   void dispose() {
     customQuestionController.dispose();
@@ -33,13 +34,14 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
     setState(() {
       _customMessages.add({'User: $stance, $text'});
     });
-  try {
-    final String response = await ChatGPTService().getResponse(text);
-    setState(() {
-      _customMessages.add({'ChatGPT: ${response}'});
-    });
-  } catch(e) {
-    print("error getting a response")
+    try {
+      final String response = await ChatGPTService().getResponse(text);
+      setState(() {
+        _customMessages.add({'ChatGPT: $response'});
+      });
+    } catch(e) {
+      print("error getting a response")
+    }
   }
   
   
