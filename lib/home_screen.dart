@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'rounded_button.dart';
-import 'results_screen.dart';
 
 User? loggedinUser;
 
@@ -12,14 +11,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _auth = FirebaseAuth.instance;
-  
+
   @override
   void initState() {
     super.initState();
     getCurrentUser();
   }
 
-  //using this function you can use the credentials of the user
+  // Retrieve the currently logged-in user
   void getCurrentUser() async {
     try {
       final user = _auth.currentUser;
@@ -31,6 +30,15 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  // Log out the user and navigate to the welcome screen
+  void _logOut() {
+    _auth.signOut();
+    Navigator.pushReplacementNamed(
+      context,
+      'welcome_screen',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,79 +46,71 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: null,
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.exit_to_app),
-              onPressed: () {
-                _auth.signOut();
-                Navigator.pushReplacementNamed(
-                  context,
-                  'welcome_screen',
-                  arguments: {},
-                );
-
-                //Implement logout functionality
-              }),
+            icon: const Icon(Icons.exit_to_app),
+            onPressed: _logOut,
+          ),
         ],
-        title: Text('Ethical AI Generator Home'),
+        title: const Text('Ethical AI Generator Home'),
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/appBackground.jpeg'), // Background image
             fit: BoxFit.cover, // Cover the entire screen
           ),
         ),
-      child: Center(
-        child: Column(
+        child: Center(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text(
-              'Welcome User',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 30),
-            ),
-            const SizedBox(height: 20),
-            RoundedButton(
-              colour: Colors.lightBlueAccent,
-              title: 'About Us',
-              onPressed:() async{
-                Navigator.pushReplacementNamed(
-                  context,
-                  'about_us_page',
-                  arguments: {},
-                );
-              }
-            ),
-            const SizedBox(height: 20),
-            RoundedButton(
-              colour: Colors.lightBlueAccent,
-              title: 'Question Generator',
-              onPressed:() async{
-                Navigator.pushReplacementNamed(
-                  context,
-                  'question_generator',
-                  arguments: {},
-                );
-              }
-            ),
-            const SizedBox(height: 20),
+                'Welcome User',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 30),
+              ),
+              const SizedBox(height: 20),
               RoundedButton(
                 colour: Colors.lightBlueAccent,
-                title: "Results Page",
-                    onPressed: () {
-                      // Your 'For' action
-                      Navigator.pushReplacementNamed( //this will take the back button option away back at the home page
-                        context, 
-                        'results_screen',
-                        arguments: {
-                            //none  to pass
-                        },
-                      );
-                    },
-                    // child: const Text('Back to Home'),
-                  ),
-              ],
+                title: 'About Us',
+                onPressed: () {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    'about_us_page',
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              RoundedButton(
+                colour: Colors.lightBlueAccent,
+                title: 'Question Generator',
+                onPressed: () {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    'question_generator',
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              RoundedButton(
+                colour: Colors.lightBlueAccent,
+                title: "All Results Page",
+                onPressed: () {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    'total_results',
+                  );
+                },
+              ),
+              const SizedBox(height: 40),
+              // Add the "Log Out" button
+              RoundedButton(
+                colour: Colors.redAccent,
+                title: "Log Out",
+                onPressed: _logOut,
+              ),
+            ],
           ),
         ),
       ),
