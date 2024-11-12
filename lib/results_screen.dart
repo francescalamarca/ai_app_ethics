@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'data_store.dart'; // Import the shared data store
 import 'rounded_button.dart';
-
-
-//Passing data via Navigator routes.
-//Using state management solutions like Provider, Riverpod, or InheritedWidget.
 
 class ResultsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Retrieve the Map of arguments directly
     final arguments = ModalRoute.of(context)!.settings.arguments as Map<String, String?>;
+
+    // Extract the data
+    final question = arguments['question'] ?? 'Unknown Question';
+    final stance = arguments['stance'] ?? 'Neutral';
+
+    // Update the shared results data store
+    _updateTotalResults(question, stance);
 
     return Scaffold(
       appBar: AppBar(
@@ -18,46 +21,83 @@ class ResultsPage extends StatelessWidget {
       ),
       backgroundColor: const Color.fromARGB(255, 84, 156, 215),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center, //aligns children center as well
-          children: [
-            Text(
-              'The Question: ${arguments['question']}',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'You Answered: ${arguments['stance']}',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'AI Response: ${arguments['response']}',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 20),
-              RoundedButton(
-                colour: Colors.lightBlueAccent,
-                title: "Back to Home Screen",
-                    onPressed: () {
-                      // Your 'For' action
-                      Navigator.pushReplacementNamed( //this will take the back button option away back at the home page
-                        context, 
-                        'home_screen',
-                        arguments: {
-                            //none  to pass
-                        },
-                      );
-                    },
-                    // child: const Text('Back to Home'),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'The Question: $question',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'You Answered: $stance',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 18),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'AI Response:',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-          ],
+                  child: Text(
+                    arguments['response'] ?? 'No response available.',
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                RoundedButton(
+                  colour: Colors.lightBlueAccent,
+                  title: "Back to Home Screen",
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, 'home_screen');
+                  },
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
+
+void _updateTotalResults(String question, String stance) {
+  // Check if the question already exists in the totalResults list
+  final existingEntryIndex = totalResults.indexWhere(
+    (entry) => entry['question'] == question,
+  );
+
+  if (existingEntryIndex != -1) {
+    // If the question exists, update the count for the specific stance
+    final existingEntry = totalResults[existingEntryIndex];
+    final stanceKey = stance.toLowerCase();
+    existingEntry[stanceKey] = (existingEntry[stanceKey] ?? 0) + 1;
+  } else {
+    // Add a new entry for the question, initializing the correct stance with 1
+    totalResults.add({
+      'question': question,
+      'for': stance == 'For' ? 1 : 0,
+      'against': stance == 'Against' ? 1 : 0,
+      'neutral': stance == 'Neutral' ? 1 : 0,
+    });
+  }
+
+  // Debugging output to track state
+}
+
+
 }

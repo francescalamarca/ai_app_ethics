@@ -72,7 +72,8 @@ flutter:
     - assets/marioneogboi.png
     - assets/convert.png
     - assets/appBackground.jpeg
-    - lib/.env
+    - assets/.env
+    # - lib/.env
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
