@@ -13,7 +13,7 @@ class ChatGPTService {
         'Authorization': 'Bearer $_apiKey',
       },
       body: jsonEncode({
-        'model': 'gpt-4',
+        'model': 'gpt-4o-mini',
         'messages': [
           {'role': 'user', 'content': message},
         ],

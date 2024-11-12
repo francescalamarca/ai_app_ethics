@@ -15,7 +15,7 @@ class _ResultsPage extends State<ResultsPage> {
   @override
   Widget build(BuildContext context) {
     // Retrieve the Map of arguments directly
-    final arguments = ModalRoute.of(context)!.settings.arguments as Map<String, String?>;
+    final arguments = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
     final question = arguments['question'] ?? 'No question provided';
     final stance = arguments['stance'] ?? 'No stance provided';
     final response = arguments['response'] ?? 'No response available';
