@@ -51,7 +51,7 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Question Generator'),
+        title: const Text('Ethical AI Question Generator'),
         backgroundColor: const Color.fromARGB(255, 84, 156, 215),
       ),
       backgroundColor: Colors.white,

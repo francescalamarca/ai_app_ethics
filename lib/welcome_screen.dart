@@ -10,13 +10,27 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+         
         backgroundColor: Colors.white,
-        body: Padding(
+        body: Container(
+          decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/appBackground.jpeg'), // Your background image
+            fit: BoxFit.cover, // Make the background image cover the entire screen
+            ),
+          ),
           padding: EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
+                const Text(
+                'Ethical AI Generator',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 40, color: Colors.blueAccent),
+                
+                ),
+                const SizedBox(height: 20),
                 RoundedButton(
                   colour: Colors.lightBlueAccent,
                   title: 'Log In',
@@ -25,11 +39,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   },
                 ),
                 RoundedButton(
-                    colour: Colors.blueAccent,
+                    colour: Colors.lightBlueAccent,
                     title: 'Register',
                     onPressed: () {
                       Navigator.pushNamed(context, 'registration_screen');
                     }),
+                  RoundedButton(
+                    colour: Colors.blueAccent,
+                    title: 'Log In As Guest',
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, 'home_screen');
+                  }),
               ]),
         ));
   }

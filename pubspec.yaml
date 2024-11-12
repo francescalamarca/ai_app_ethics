@@ -71,6 +71,7 @@ flutter:
     - assets/francesca.png
     - assets/marioneogboi.png
     - assets/convert.png
+    - assets/appBackground.jpeg
     - lib/.env
 
 
