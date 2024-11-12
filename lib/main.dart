@@ -10,20 +10,16 @@ import 'results_screen.dart';
 import 'about_us_page.dart';
 import 'forgot_password.dart';
 import 'package:device_preview/device_preview.dart';
-import "package:http/http.dart" as http;
-import "dart:convert";
 
 //for gpt
-import 'dart:io';
-import 'chat_gpt_service.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    //await dotenv.load();
+    
     runApp(
       DevicePreview(
         // enabled: !kReleaseMode, //only see preview in debug mode
@@ -46,7 +42,7 @@ class MyApp extends StatelessWidget {
         'login_screen': (context) => LoginScreen(),
         'home_screen': (context) => HomeScreen(),
         'question_generator': (context) => QuestionGenerator(),
-        'results_screen.dart': (context) => ResultsPage(),
+        'results_screen': (context) => ResultsPage(),
         'about_us_page': (context) => AboutUsPage(title: "About Us"),
         'forgot_password': (context) => ForgotPassword(),
       },

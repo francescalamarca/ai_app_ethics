@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'chat_gpt_service.dart';
 import 'rounded_button.dart';
 import 'results_screen.dart';
+import 'dart:io';
 
 
 class QuestionGenerator extends StatefulWidget {
@@ -30,7 +31,11 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
 
   handleSubmitted(String stance, String question) async {
     // Logic to send message to gpt will go here
-    if (question.isEmpty) return;
+    if (question.isEmpty) {
+     return;
+    }
+
+    final chatService = ChatGPTService();
 
     customQuestionController.clear();
     setState(() {
@@ -38,7 +43,7 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
     });
 
     try {
-      final String response = await ChatGPTService().getResponse('$stance: $question');
+      final String response = await chatService.getResponse('$stance: $question');
 
       setState(() {
         _customMessages.add('ChatGPT: $response');
@@ -54,9 +59,9 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
           'response': response,  // Pass the response here
         },
       );
-    } catch (e) {
-      print("Error getting a response: $e");
-    }
+      } catch (e) {
+        print("Error getting a response: $e");
+      }
   } //end handleSubmitted
 
 

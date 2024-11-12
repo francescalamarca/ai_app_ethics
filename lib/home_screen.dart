@@ -12,7 +12,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _auth = FirebaseAuth.instance;
-  
+
   @override
   void initState() {
     super.initState();
@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: "Results Page",
                     onPressed: () {
                       // Your 'For' action
-                      Navigator.pushReplacementNamed( //this will take the back button option away back at the home page
+                      Navigator.pushNamed( //this will take the back button option away back at the home page
                         context, 
                         'results_screen',
                         arguments: {

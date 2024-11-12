@@ -26,7 +26,6 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-  final _auth = FirebaseAuth.instance;
   String email = '';
   String password = '';
   bool showSpinner = false;
