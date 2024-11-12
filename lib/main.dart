@@ -1,3 +1,4 @@
+import 'package:ai_app_ethics/total_results.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         'results_screen': (context) => ResultsPage(),
         'about_us_page': (context) => AboutUsPage(title: "About Us"),
         'forgot_password': (context) => ForgotPassword(),
+        'total_results': (context) => TotalResultsPage(),
       },
     );
   }
