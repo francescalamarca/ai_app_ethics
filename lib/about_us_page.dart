@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'aboutus_theme.dart';
+import 'rounded_button.dart';
 
 class AboutUsPage extends StatefulWidget {
   const AboutUsPage({super.key, required this.title});
@@ -111,29 +111,23 @@ class _AboutUsPageState extends State<AboutUsPage> {
 
               const SizedBox(height: 20),
 
-              // Team Section
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center, // Center the row
+              Wrap(
+                spacing: 20, // Space between cards horizontally
+                runSpacing: 20, // Space between cards vertically
+                alignment: WrapAlignment.center,
                 children: [
-                  // First person
                   _buildTeamMemberCard(
                     context,
                     'assets/ethanchou.png',
                     'Ethan Chou',
                     'Plano, TX\nComputer Science B.S. With AI Specialization\nSoftware Engineer\nHas a pet turtle',
                   ),
-                  const SizedBox(width: 20), // Space between images
-
-                  // Second person
                   _buildTeamMemberCard(
                     context,
                     'assets/francesca.png',
                     'Francesca La Marca',
                     'San Diego, CA\nComputer Science B.S General Track, Math Minor\nHas a twin at TCU',
                   ),
-                  const SizedBox(width: 20), // Space between images
-
-                  // Third person
                   _buildTeamMemberCard(
                     context,
                     'assets/marioneogboi.png',
@@ -145,7 +139,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
 
               const SizedBox(height: 20),
 
-              // Go Back Button wrapped with MouseRegion to handle hover effects
+              // Go Back Button with MouseRegion for hover effect
               MouseRegion(
                 onEnter: (_) {
                   setState(() {
@@ -157,15 +151,16 @@ class _AboutUsPageState extends State<AboutUsPage> {
                     _isHovered = false;
                   });
                 },
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context); // This will pop the current screen and go back
+                child: RoundedButton(
+                  colour: _isHovered ? Colors.red.shade700 : Colors.red,
+                  title: 'Back',
+                  onPressed: () async {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      'home_screen',
+                      arguments: {},
+                    );
                   },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: _isHovered ? Colors.red : Colors.white, // Text color
-                    backgroundColor: _isHovered ? Colors.white : Color(0xFFE4002B), // Button color
-                  ),
-                  child: const Text('Go Back'),
                 ),
               ),
             ],
@@ -175,17 +170,21 @@ class _AboutUsPageState extends State<AboutUsPage> {
     );
   }
 
-  // Custom widget to build the card for each team member
+  //building each team member card
   Widget _buildTeamMemberCard(
       BuildContext context, String imagePath, String name, String funFacts) {
+    // Calculate the card width based on screen width
+    final screenWidth = MediaQuery.of(context).size.width;
+    final double cardWidth = (screenWidth < 600) ? screenWidth / 2 - 30 : 150; // Responsive width
+
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
       child: SizedBox(
-        height: 280, // Set a fixed height for the card
-        width: 150,  // Set a fixed width for the card
+        height: 280,
+        width: cardWidth,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -205,7 +204,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                 name,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF003D73), // SMU Blue
+                      color: Color(0xFF003D73),
                     ),
               ),
               const SizedBox(height: 8),
@@ -226,5 +225,6 @@ class _AboutUsPageState extends State<AboutUsPage> {
     );
   }
 }
+
 
 

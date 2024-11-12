@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'rounded_button.dart';
+import 'results_screen.dart';
 
 User? loggedinUser;
 
@@ -11,7 +12,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _auth = FirebaseAuth.instance;
-
+  
+  @override
   void initState() {
     super.initState();
     getCurrentUser();
@@ -20,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //using this function you can use the credentials of the user
   void getCurrentUser() async {
     try {
-      final user = await _auth.currentUser;
+      final user = _auth.currentUser;
       if (user != null) {
         loggedinUser = user;
       }
@@ -51,7 +53,14 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('Ethical AI Generator Home'),
         backgroundColor: Colors.lightBlueAccent,
       ),
-      body: Center(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/appBackground.jpeg'), // Background image
+            fit: BoxFit.cover, // Cover the entire screen
+          ),
+        ),
+      child: Center(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -66,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
               colour: Colors.lightBlueAccent,
               title: 'About Us',
               onPressed:() async{
-                Navigator.pushNamed(
+                Navigator.pushReplacementNamed(
                   context,
                   'about_us_page',
                   arguments: {},
@@ -78,14 +87,31 @@ class _HomeScreenState extends State<HomeScreen> {
               colour: Colors.lightBlueAccent,
               title: 'Question Generator',
               onPressed:() async{
-                Navigator.pushNamed(
+                Navigator.pushReplacementNamed(
                   context,
                   'question_generator',
                   arguments: {},
                 );
               }
             ),
-            ],
+            const SizedBox(height: 20),
+              RoundedButton(
+                colour: Colors.lightBlueAccent,
+                title: "Results Page",
+                    onPressed: () {
+                      // Your 'For' action
+                      Navigator.pushReplacementNamed( //this will take the back button option away back at the home page
+                        context, 
+                        'results_screen',
+                        arguments: {
+                            //none  to pass
+                        },
+                      );
+                    },
+                    // child: const Text('Back to Home'),
+                  ),
+              ],
+          ),
         ),
       ),
     );
