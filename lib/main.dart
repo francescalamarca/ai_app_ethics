@@ -23,7 +23,14 @@ void main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    //await dotenv.load();
+  
+    await dotenv.load();  // Try to load the environment variables
+    String? apiKey = dotenv.env['YOUR_API_KEY'];
+if (apiKey == null) {
+  print('Error: API Key not found');
+} else {
+  print('API Key Loaded: $apiKey');
+}
     runApp(
       DevicePreview(
         // enabled: !kReleaseMode, //only see preview in debug mode
@@ -46,7 +53,7 @@ class MyApp extends StatelessWidget {
         'login_screen': (context) => LoginScreen(),
         'home_screen': (context) => HomeScreen(),
         'question_generator': (context) => QuestionGenerator(),
-        'results_screen.dart': (context) => ResultsPage(),
+        'results_screen': (context) => ResultsPage(),
         'about_us_page': (context) => AboutUsPage(title: "About Us"),
         'forgot_password': (context) => ForgotPassword(),
       },

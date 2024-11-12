@@ -52,7 +52,7 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
           'question': question,
           'stance': stance,
           'response': response,  // Pass the response here
-        },
+        } as Map<String, String?>,
       );
     } catch (e) {
       print("Error getting a response: $e");
