@@ -35,7 +35,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: ModalProgressHUD(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/appBackground.jpeg'), // Background image
+            fit: BoxFit.cover, // Cover the entire screen
+          ),
+        ),
+      child: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.0),
@@ -76,7 +83,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 ),
                 RoundedButton(
                     colour: Colors.lightBlueAccent,
-                    title: 'S',
+                    title: 'Submit',
                     onPressed: () async {
                       Navigator.pushReplacementNamed( //this will take the back button option away back at the home page
                         context, 
@@ -87,10 +94,22 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       );
                     },
                 ),
+                SizedBox(height: 24.0),
+                RoundedButton(
+                  colour: Colors.lightBlueAccent,
+                  title: 'Back to Welcome Screen',
+                  onPressed: () async {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      'welcome_screen', // Adjusted to a meaningful route
+                    );
+                  },
+                ),
             ],
           ),
         ),
       ),
+    ),
     );
   }
 }

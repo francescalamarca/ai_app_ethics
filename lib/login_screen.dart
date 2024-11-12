@@ -36,94 +36,88 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: ModalProgressHUD(
-        inAsyncCall: showSpinner,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              const Text(
-                'Ethical AI Generator',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/appBackground.jpeg'), // Background image
+            fit: BoxFit.cover, // Cover the entire screen
+          ),
+        ),
+        child: ModalProgressHUD(
+          inAsyncCall: showSpinner,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                const Text(
+                  'Ethical AI Generator',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 24, color: Colors.black), // Add color for visibility
                 ),
-              TextField(
+                SizedBox(height: 20.0),
+                TextField(
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     email = value;
-                    //Do something with the user input.
                   },
                   decoration: kTextFieldDecoration.copyWith(
                     hintText: 'Enter your email',
-                  )),
-              SizedBox(
-                height: 8.0,
-              ),
-              TextField(
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                TextField(
                   obscureText: true,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     password = value;
-                    //Do something with the user input.
                   },
                   decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Enter your password.')),
-              SizedBox(
-                height: 24.0,
-              ),
-              RoundedButton(
+                    hintText: 'Enter password',
+                  ),
+                ),
+                SizedBox(height: 24.0),
+                RoundedButton(
                   colour: Colors.lightBlueAccent,
-                  title: 'Log In',
+                  title: 'Submit',
                   onPressed: () async {
-                    setState(() {
-                      showSpinner = true;
-                    });
-                    try {
-                      final user = await _auth.signInWithEmailAndPassword(
-                          email: email, password: password);
-                      if (user != null) {
-                        Navigator.pushReplacementNamed(context, 'home_screen');
-                      }
-                    } catch (e) {
-                      print(e);
-                    }
-                    setState(() {
-                      showSpinner = false;
-                    });
-                  }),
-                SizedBox(height: 24.0,),
-              RoundedButton(
+                    Navigator.pushReplacementNamed(
+                      context,
+                      'home_screen', // Adjusted to a meaningful route
+                    );
+                  },
+                ),
+                SizedBox(height: 24.0),
+                RoundedButton(
                   colour: Colors.lightBlueAccent,
                   title: 'Forgot Password',
                   onPressed: () async {
-                    Navigator.pushReplacementNamed( //this will take the back button option away back at the home page
-                      context, 
-                      'Forgot Password',
-                      arguments: {
-                          //none  to pass
-                      },
+                    Navigator.pushReplacementNamed(
+                      context,
+                      'forgot_password', // Adjusted to a meaningful route
                     );
                   },
-              ),
-              
-              RoundedButton(
+                ),
+                const SizedBox(height: 20),
+                RoundedButton(
                   colour: Colors.lightBlueAccent,
-                  title: 'Back to Welcome Screen',
-                  onPressed: () async {
-                    Navigator.pushReplacementNamed( //this will take the back button option away back at the home page
-                      context, 
-                      'welcome_screen',
-                      arguments: {
-                          //none  to pass
+                  title: "Back to Welcome Screen",
+                      onPressed: () {
+                        // Your 'For' action
+                        Navigator.pushReplacementNamed( //this will take the back button option away back at the home page
+                          context, 
+                          'welcome_screen',
+                          arguments: {
+                              //none  to pass
+                          },
+                        );
                       },
-                    );
-                  },
-              ),
-            ],
+                      // child: const Text('Back to Home'),
+                    ),
+              ],
+            ),
           ),
         ),
       ),

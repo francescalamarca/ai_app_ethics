@@ -1,5 +1,5 @@
-import "dart:ui";
 import 'package:flutter/material.dart';
+import 'rounded_button.dart';
 
 
 //Passing data via Navigator routes.
@@ -39,6 +39,22 @@ class ResultsPage extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16),
             ),
+            const SizedBox(height: 20),
+              RoundedButton(
+                colour: Colors.lightBlueAccent,
+                title: "Back to Home Screen",
+                    onPressed: () {
+                      // Your 'For' action
+                      Navigator.pushReplacementNamed( //this will take the back button option away back at the home page
+                        context, 
+                        'home_screen',
+                        arguments: {
+                            //none  to pass
+                        },
+                      );
+                    },
+                    // child: const Text('Back to Home'),
+                  ),
           ],
         ),
       ),

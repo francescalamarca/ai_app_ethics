@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'chat_gpt_service.dart';
 import 'rounded_button.dart';
+import 'results_screen.dart';
 
 
 class QuestionGenerator extends StatefulWidget {
@@ -27,7 +28,7 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
     super.dispose();
   }
 
-  void handleSubmitted(String stance, String question) async {
+  handleSubmitted(String stance, String question) async {
     // Logic to send message to gpt will go here
     if (question.isEmpty) return;
 
@@ -37,49 +38,75 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
     });
 
     try {
-      final String response = await ChatGPTService().getResponse('$stance$question');
+      final String response = await ChatGPTService().getResponse('$stance: $question');
 
       setState(() {
         _customMessages.add('ChatGPT: $response');
       });
+
+      // Navigate to results screen with question, stance, and response
+      Navigator.pushNamed(
+        context,
+        'results_screen',
+        arguments: {
+          'question': question,
+          'stance': stance,
+          'response': response,  // Pass the response here
+        },
+      );
     } catch (e) {
       print("Error getting a response: $e");
     }
   } //end handleSubmitted
 
+
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ethical AI Question Generator'),
-        backgroundColor: const Color.fromARGB(255, 84, 156, 215),
+        backgroundColor: Colors.transparent,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/appBackground.jpeg'),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
       ),
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Text(
-              'For this question generator, enter your own query or choose a preset question, once chosen select a stance you would take to submit.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16),
+      body: SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const Text(
+            'For this question generator, enter your own query or choose a preset question, once chosen select a stance you would take to submit.',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16),
+          ),
+          const SizedBox(height: 20),
+
+          // AI Preset Questions Dropdown
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.9, // Responsive width
             ),
-            const SizedBox(height: 20),
-            
-            // AI Preset Questions Dropdown
-            DropdownButtonFormField<String>(
+            child: DropdownButtonFormField<String>(
               value: selectedPreset,
               hint: const Text('Select a preset question'),
               onChanged: isPresetQuestionEnabled
                   ? (newValue) {
                       setState(() {
                         selectedPreset = newValue;
-                        // Disable custom text field when a preset is selected
-                          isCustomQuestionEnabled = false;
+                        isCustomQuestionEnabled = false;
                       });
                     }
-                  : null, // Disable if custom question is filled
+                  : null,
               items: presetQuestions.map((question) {
                 return DropdownMenuItem(
                   value: question,
@@ -87,83 +114,70 @@ class _QuestionGeneratorState extends State<QuestionGenerator> {
                 );
               }).toList(),
             ),
-            const SizedBox(height: 20),
-            
-            // My Question TextField
-            TextFormField(
-              controller: customQuestionController,
-              decoration: const InputDecoration(labelText: 'My Question'),
-              enabled: isCustomQuestionEnabled, // Disable if preset question is chosen
-              onChanged: (text) {
-                setState(() {
-                  // Disable preset dropdown when a custom question is entered
-                  isPresetQuestionEnabled = text.isEmpty;
-                  //logic for passing question into AI here
-                });
-              },
-            ),
-            const SizedBox(height: 20),
+          ),
+          const SizedBox(height: 20),
 
-            // For, Against, Neutral Buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: ['For', 'Against', 'Neutral'].map((stance) {
-                return RoundedButton(
+          // My Question TextField
+          TextFormField(
+            controller: customQuestionController,
+            decoration: const InputDecoration(labelText: 'My Question'),
+            enabled: isCustomQuestionEnabled,
+            onChanged: (text) {
+              setState(() {
+                isPresetQuestionEnabled = text.isEmpty;
+              });
+            },
+          ),
+          const SizedBox(height: 20),
+
+          // Stance Buttons
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: ['For', 'Against', 'Neutral'].map((stance) {
+              return Expanded(
+                child: RoundedButton(
                   colour: Colors.lightBlueAccent,
                   title: stance,
                   onPressed: () {
-                    final String question = customQuestionController.text.isEmpty 
-                      ? selectedPreset!
-                      : customQuestionController.text;
+                    final String question = customQuestionController.text.isEmpty
+                        ? selectedPreset!
+                        : customQuestionController.text;
                     handleSubmitted(stance, question);
-                    Navigator.pushNamed(
-                      context,
-                      'results_screen',
-                      arguments: {
-                        'question': question,
-                        'stance': stance,
-                      },
-                    );
                   },
-                  // child: Text(stance),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 30),
-            //add a reset button to reset dropdown
-            RoundedButton(
-              colour: Colors.lightBlueAccent,
-              title: "Reset Filters",
-              onPressed: () {
-                setState(() {
-                // Reset the selected preset question and custom question controller
+                ),
+              );
+            }).toList(),
+          ),
+          const SizedBox(height: 30),
+
+          // Reset and Back to Home Buttons
+          RoundedButton(
+            colour: Colors.lightBlueAccent,
+            title: "Reset Filters",
+            onPressed: () {
+              setState(() {
                 selectedPreset = null;
                 customQuestionController.clear();
-                isPresetQuestionEnabled = true; // Enable the dropdown again
-                isCustomQuestionEnabled = true; // Enable custom question input
+                isPresetQuestionEnabled = true;
+                isCustomQuestionEnabled = true;
               });
             },
-            // child: const Text('Reset Filters'),
-            ),
-            const SizedBox(height: 10),
-            RoundedButton(
-              colour: Colors.lightBlueAccent,
-              title: "Back to Home",
-                  onPressed: () {
-                    // Your 'For' action
-                    Navigator.pushReplacementNamed( //this will take the back button option away back at the home page
-                      context, 
-                      'home_screen',
-                      arguments: {
-                          //none  to pass
-                      },
-                    );
-                  },
-                  // child: const Text('Back to Home'),
-                ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 10),
+          RoundedButton(
+            colour: Colors.lightBlueAccent,
+            title: "Back to Home",
+            onPressed: () {
+              Navigator.pushReplacementNamed(
+                context,
+                'home_screen',
+                arguments: {},
+              );
+            },
+          ),
+        ],
       ),
-    );
+    ),
+  );
   }
 }
