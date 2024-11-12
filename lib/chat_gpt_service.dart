@@ -19,7 +19,7 @@ class ChatGPTService {
           {'role': 'system', 'content': 'You are a helpful assistant.'},
           {'role': 'user', 'content': message}
         ],
-        'max_tokens': 60
+        'max_tokens': 100
       }),
     );
 
